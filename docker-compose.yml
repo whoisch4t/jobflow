@@ -1,0 +1,67 @@
+# Full stack: PostgreSQL + Redis + API + web.
+#   docker compose up --build        → http://localhost:3100
+#   docker compose up postgres redis → only the databases, for `npm run dev`
+#
+# The secrets below are for local use only. Set real ones in your environment for anything public.
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: jobflow
+      POSTGRES_PASSWORD: jobflow
+      POSTGRES_DB: jobflow
+    ports:
+      - '5433:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U jobflow']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - '6379:6379'
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    environment:
+      NODE_ENV: production
+      PORT: 4100
+      DATABASE_URL: postgresql://jobflow:jobflow@postgres:5432/jobflow
+      REDIS_URL: redis://redis:6379
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-local-only-access-secret-change-me-0000000}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-local-only-refresh-secret-change-me-000000}
+      WEB_ORIGIN: http://localhost:3100
+      COOKIE_SECURE: 'false'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - '4100:4100'
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        API_URL: http://api:4100
+    depends_on:
+      - api
+    ports:
+      - '3100:3100'
+
+volumes:
+  pgdata:

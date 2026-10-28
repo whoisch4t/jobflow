@@ -1,0 +1,46 @@
+{
+  "name": "jobflow",
+  "version": "0.1.0",
+  "author": "Batuhan Sarısoy",
+  "license": "MIT",
+  "private": true,
+  "description": "Full-stack job application tracker: applications, interviews, offers, CV versions and analytics.",
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "db:start": "node scripts/dev-db.mjs",
+    "db:migrate": "npm run db:migrate -w @jobflow/api",
+    "db:seed": "npm run db:seed -w @jobflow/api",
+    "dev": "concurrently -k -n api,web -c blue,magenta \"npm:dev -w @jobflow/api\" \"npm:dev -w @jobflow/web\"",
+    "build": "npm run build -w @jobflow/api && npm run build -w @jobflow/web",
+    "start": "concurrently -k -n api,web -c blue,magenta \"npm:start -w @jobflow/api\" \"npm:start -w @jobflow/web\"",
+    "lint": "eslint .",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "e2e": "npm run e2e -w @jobflow/web",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "concurrently": "^10.0.6",
+    "embedded-postgres": "^18.4.0-beta.17",
+    "eslint": "^10.13.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.13.0",
+    "prettier": "^3.9.10",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.72.0"
+  },
+  "allowScripts": {
+    "@embedded-postgres/windows-x64@18.4.0-beta.17": true,
+    "prisma@7.10.1": true,
+    "@prisma/engines@7.10.1": true,
+    "esbuild@0.28.2": true
+  }
+}

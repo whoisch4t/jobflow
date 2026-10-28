@@ -1,0 +1,81 @@
+@import 'tailwindcss';
+
+/* Design tokens. Components use these names (bg-surface, text-muted …), so dark mode only redefines variables. */
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --color-bg: #f6f7f9;
+  --color-surface: #ffffff;
+  --color-surface-2: #f1f3f6;
+  --color-border: #e3e6eb;
+  --color-fg: #14171f;
+  --color-muted: #5f6776;
+  --color-subtle: #8a92a0;
+  --color-primary: #4f46e5;
+  --color-primary-hover: #4338ca;
+  --color-primary-fg: #ffffff;
+  --color-primary-soft: #eef0ff;
+  --color-danger: #dc2626;
+  --color-danger-soft: #fdecec;
+  --color-success: #15803d;
+  --color-warning: #b45309;
+
+  --color-status-wishlist: #64748b;
+  --color-status-applied: #2563eb;
+  --color-status-screening: #0891b2;
+  --color-status-interviewing: #7c3aed;
+  --color-status-offer: #d97706;
+  --color-status-accepted: #16a34a;
+  --color-status-rejected: #dc2626;
+  --color-status-withdrawn: #78716c;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #0e1117;
+    --color-surface: #161a22;
+    --color-surface-2: #1d222c;
+    --color-border: #2a303c;
+    --color-fg: #e8eaee;
+    --color-muted: #a3aab7;
+    --color-subtle: #757d8b;
+    --color-primary: #818cf8;
+    --color-primary-hover: #a5b4fc;
+    --color-primary-fg: #0e1117;
+    --color-primary-soft: #1f2340;
+    --color-danger: #f87171;
+    --color-danger-soft: #3a1d1d;
+    --color-success: #4ade80;
+    --color-warning: #fbbf24;
+
+    --color-status-wishlist: #94a3b8;
+    --color-status-applied: #60a5fa;
+    --color-status-screening: #22d3ee;
+    --color-status-interviewing: #a78bfa;
+    --color-status-offer: #fbbf24;
+    --color-status-accepted: #4ade80;
+    --color-status-rejected: #f87171;
+    --color-status-withdrawn: #a8a29e;
+  }
+}
+
+html {
+  color-scheme: light dark;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Native date pickers follow the theme. */
+input[type='date']::-webkit-calendar-picker-indicator,
+input[type='datetime-local']::-webkit-calendar-picker-indicator {
+  opacity: 0.6;
+}
