@@ -127,6 +127,10 @@ docker compose up --build
 
 Then open http://localhost:3100. Migrations run when the API container starts. For demo data, run `npm run db:seed` from your machine: the database is published on port 5433, which is what `apps/api/.env.example` points to.
 
+### Deploy
+
+See [docs/DEPLOY.md](docs/DEPLOY.md) for environment variables, the demo seed and a post-deploy checklist.
+
 ## Scripts
 
 | Command                                  | What it does                                                     |

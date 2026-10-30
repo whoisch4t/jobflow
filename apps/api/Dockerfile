@@ -22,7 +22,10 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=build /app/apps/api/dist ./apps/api/dist
 COPY apps/api/package.json apps/api/prisma.config.ts ./apps/api/
 COPY apps/api/prisma ./apps/api/prisma
+
+COPY --from=build /app/apps/api/src ./apps/api/src
 WORKDIR /app/apps/api
 USER node
 EXPOSE 4100
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/server.js"]
+# SEED_DEMO=true resets the demo account on every start, for hosts without a shell.
+CMD ["sh", "-c", "npx prisma migrate deploy && if [ \"$SEED_DEMO\" = true ]; then npx prisma db seed; fi && node dist/server.js"]
